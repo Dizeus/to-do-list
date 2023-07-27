@@ -2,7 +2,6 @@
 const ProgressBar = () => {
   return (
     <div>
-		hello
     </div>
   );
 }
