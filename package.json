@@ -4,12 +4,14 @@
   "description": "",
   "scripts": {
     "build": "if-env TYPE=server && (cd server && npm install) || (cd client && npm install)",
-	"server": "node ./server/server.js",
-	"client": "cd client && npm start"
+    "server": "node ./server/server.js",
+    "client": "cd client && npm start",
+    "all": "cd client && npm start && cd ../ && cd server && npm run start"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-	"if-env": "^1.0.4"
+    "body-parser": "^1.20.2",
+    "if-env": "^1.0.4"
   }
 }
