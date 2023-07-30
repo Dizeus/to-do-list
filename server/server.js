@@ -5,6 +5,9 @@ const { v4: uuidv4 } = require('uuid')
 const cors = require('cors')
 const app = express()
 const pool = require('./db')
+const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
+const {sign} = require("jsonwebtoken");
 app.use(cors())
 app.use(express.json())
 app.get('/', (req,res)=>{
@@ -54,5 +57,38 @@ app.delete('/todos/:id', async (req, res)=>{
     }
 })
 
+app.post('/signup', async (req, res)=>{
+    const {user_email,password} = req.body
+    const salt = bcrypt.genSaltSync(10)
+    const hashedPassword = bcrypt.hashSync(password, salt)
+    try{
+        const newUser = await pool.query(`INSERT INTO users(email, hashed_password) VALUES($1,$2)`, [user_email, hashedPassword]);
 
+        const token = jwt.sign({user_email}, 'secret', {expiresIn: '1hr'})
+        res.json({user_email, token})
+    }catch (error){
+        console.error(error)
+        if(error)
+            res.json({detail: error.detail})
+    }
+})
+app.post('/login', async (req, res)=>{
+    const {user_email, password} = req.body
+    try{
+        const users = await pool.query(`SELECT * FROM users WHERE email=$1`, [user_email]);
+
+        if (!users.rows.length) return res.json({ detail: 'User does not exist!' })
+        let success = bcrypt.compare(password, users.rows[0].hashed_password);
+        console.log(users.rows[0])
+        if (success) {
+            const token = jwt.sign({ user_email }, 'secret', { expiresIn: '1hr' })
+            res.json({ 'user_email' : users.rows[0].email, token})
+        } else {
+            res.json({ detail: "Login failed"})
+        }
+
+    }catch (error){
+        console.error(error)
+    }
+})
 app.listen(PORT, ()=>console.log(`Server Running on PORT ${PORT}`))

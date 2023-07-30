@@ -24,13 +24,10 @@ export const setTasks = (userTasks) => ({ type: SET_TASKS, payload:userTasks});
 export const editTasks = (newTasks) => ({ type: SET_TASKS, payload:newTasks});
 
 
-export const getData = () => async (dispatch)=> {
-    console.log('getdata')
-    const userEmail = 'illia@gmail.com';
+export const getData = (userEmail) => async (dispatch)=> {
     try {
         const response = await fetch(`http://localhost:8000/todos/${userEmail}`)
         const todos = await response.json();
-        console.log(todos)
         dispatch(setTasks(todos))
     }catch (err){
         console.error(err)
@@ -58,7 +55,7 @@ export const updateTask = (data, id) => async (dispatch) => {
             body: JSON.stringify(data)
         })
         if(response.status===200){
-            const userEmail = 'illia@gmail.com';
+            const userEmail = data.user_email;
             const response = await fetch(`http://localhost:8000/todos/${userEmail}`)
             const todos = await response.json();
             dispatch(editTasks(todos))

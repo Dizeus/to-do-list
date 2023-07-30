@@ -1,12 +1,17 @@
 import {useState} from "react";
 import Modal from "./Modal";
 import {createTask, updateTask} from "../redux/app-reducer";
+import {useCookies} from "react-cookie";
 
 const ListHeader = ({updateTask, getData, createTask, listName}) => {
 
-	const [showModal, setShowModal] = useState(false);
+	const [showModal, setShowModal] = useState(false)
+	const [cookies, setCookie, removeCookie] = useCookies(null)
 	const signOut = () =>{
 		console.log("signOut")
+		removeCookie('Email')
+		removeCookie('AuthToken')
+		window.location.reload()
 	}
   return (
     <div className="list-header">

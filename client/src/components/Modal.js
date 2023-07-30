@@ -1,18 +1,21 @@
 import {useState} from "react";
 import {Formik} from "formik";
+import {useCookies} from "react-cookie";
 
 const Modal = ({updateTask, getData, createTask, mode, task, setShowModal}) => {
 
-    const editMode = mode==='edit'
+    const [cookies, setCookies, removeCookies] = useCookies(null)
 
-    const editTask = (data) => {
-        updateTask(data, task.id)
-        getData()
+    const editMode = mode ==='edit'
+
+    const editTask = async (data) => {
+        await updateTask(data, task.id)
+        await getData(task.user_email)
         setShowModal(false)
     }
     const createTask1 = async (data)=>{
         await createTask(data)
-        await getData()
+        await getData(cookies.Email)
         setShowModal(false)
     }
   return (
@@ -23,7 +26,7 @@ const Modal = ({updateTask, getData, createTask, mode, task, setShowModal}) => {
                   <button onClick={() => setShowModal(false)}>X</button>
               </div>
               <Formik
-                  initialValues={{user_email:editMode?task.user_email:'illia@gmail.com', title: editMode?task.title:'', progress: editMode?task.progress:'', date: editMode?task.date:new Date()}}
+                  initialValues={{user_email:cookies.Email, title: editMode?task.title:'', progress: editMode?task.progress:'', date: editMode?task.date:new Date()}}
                   validate={values => {
                       const errors = {};
 
