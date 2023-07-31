@@ -5,6 +5,7 @@
   "scripts": {
     "build": "if-env TYPE=server && (cd server && npm install) || (cd client && npm install)",
     "server": "node ./server/server.js",
+    "start": "cd server && node server.js",
     "client": "cd client && npm start",
     "all": "cd client && npm start && cd ../ && cd server && npm run start"
   },
