@@ -1,23 +1,12 @@
-import {useState} from "react";
 import {Formik} from "formik";
 import {useCookies} from "react-cookie";
 
-const Modal = ({updateTask, getData, createTask, mode, task, setShowModal}) => {
+const Modal = ({updateTask, createTask, mode, task, setShowModal}) => {
 
     const [cookies, setCookies, removeCookies] = useCookies(null)
 
     const editMode = mode ==='edit'
 
-    const editTask = async (data) => {
-        await updateTask(data, task.id)
-        await getData(task.user_email)
-        setShowModal(false)
-    }
-    const createTask1 = async (data)=>{
-        await createTask(data)
-        await getData(cookies.Email)
-        setShowModal(false)
-    }
   return (
       <div className="overlay">
           <div className="modal">
@@ -26,36 +15,20 @@ const Modal = ({updateTask, getData, createTask, mode, task, setShowModal}) => {
                   <button onClick={() => setShowModal(false)}>X</button>
               </div>
               <Formik
-                  initialValues={{user_email:cookies.Email, title: editMode?task.title:'', progress: editMode?task.progress:'', date: editMode?task.date:new Date()}}
-                  validate={values => {
-                      const errors = {};
-
-                      // if (!values.aboutMe) {
-                      //     errors.aboutMe = 'Required';
-                      // } else if (!values.fullName) {
-                      //     errors.aboutMe = 'Required';
-                      // }else if (!values.lookingForAJobDescription) {
-                      //     errors.lookingForAJobDescription = 'Required';
-                      // }
-
-                      return errors;
-
-                  }}
+                  initialValues={{user_email:cookies.Email, title: editMode?task.title:'', progress: editMode?task.progress:'0', date: editMode?task.date:new Date()}}
                   onSubmit={(values, { setSubmitting, setStatus }) => {
-                      editMode? editTask(values): createTask1(values);
+                      editMode? updateTask(values, task.id): createTask(values);
+                      setShowModal(false)
                       setSubmitting(false);
                   }}
               >
                   {({
                         values,
-                        errors,
-                        touched,
                         handleChange,
                         handleBlur,
                         handleSubmit,
                         isSubmitting,
                         status,
-                        /* and other goodies */
                     }) => (
                       <form onSubmit={handleSubmit}>
                           <input
@@ -83,8 +56,6 @@ const Modal = ({updateTask, getData, createTask, mode, task, setShowModal}) => {
                       </form>
                   )}
               </Formik>
-
-
           </div>
       </div>
   );

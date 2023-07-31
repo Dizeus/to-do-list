@@ -1,16 +1,12 @@
 import {useState} from "react";
 import Modal from "./Modal";
-import {createTask, updateTask} from "../redux/app-reducer";
-import {useCookies} from "react-cookie";
 
-const ListHeader = ({updateTask, getData, createTask, listName}) => {
+const ListHeader = ({updateTask, createTask, listName, removeCookies}) => {
 
 	const [showModal, setShowModal] = useState(false)
-	const [cookies, setCookie, removeCookie] = useCookies(null)
 	const signOut = () =>{
-		console.log("signOut")
-		removeCookie('Email')
-		removeCookie('AuthToken')
+		removeCookies('Email')
+		removeCookies('AuthToken')
 		window.location.reload()
 	}
   return (
@@ -20,7 +16,7 @@ const ListHeader = ({updateTask, getData, createTask, listName}) => {
 			<button className='create' onClick={()=>setShowModal(true)}>ADD NEW</button>
 			<button className="signout" onClick={signOut}>Sign out</button>
 		</div>
-		{showModal && <Modal updateTask={updateTask} getData={getData} createTask={createTask} mode={'create'} setShowModal={setShowModal} task={{}}/>}
+		{showModal && <Modal updateTask={updateTask} createTask={createTask} mode={'create'} setShowModal={setShowModal} task={{}}/>}
     </div>
   );
 }

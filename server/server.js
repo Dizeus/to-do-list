@@ -1,5 +1,4 @@
 const PORT = process.env.PORT ?? 8000; //receive our port or set default 8000
-
 const express = require('express')
 const { v4: uuidv4 } = require('uuid')
 const cors = require('cors')
@@ -10,6 +9,8 @@ const jwt = require('jsonwebtoken')
 const {sign} = require("jsonwebtoken");
 app.use(cors())
 app.use(express.json())
+
+
 app.get('/', (req,res)=>{
     res.send('hello something')
 })
@@ -19,7 +20,7 @@ app.get('/', (req,res)=>{
 app.get('/todos/:userEmail', async (req, res)=>{
     try{
         const email = req.params.userEmail;
-        const todos = await pool.query(`SELECT * FROM todos WHERE user_email=$1`, [email]);
+        const todos = await pool.query(`SELECT * FROM todos WHERE user_email=$1 ORDER BY date ASC`, [email]);
         res.json(todos.rows)
     }catch (error){
         console.error(error)
@@ -78,8 +79,7 @@ app.post('/login', async (req, res)=>{
         const users = await pool.query(`SELECT * FROM users WHERE email=$1`, [user_email]);
 
         if (!users.rows.length) return res.json({ detail: 'User does not exist!' })
-        let success = bcrypt.compare(password, users.rows[0].hashed_password);
-        console.log(users.rows[0])
+        let success = await bcrypt.compare(password, users.rows[0].hashed_password);
         if (success) {
             const token = jwt.sign({ user_email }, 'secret', { expiresIn: '1hr' })
             res.json({ 'user_email' : users.rows[0].email, token})

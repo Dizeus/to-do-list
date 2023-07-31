@@ -1,29 +1,26 @@
 import {useState} from "react";
 import {Formik} from "formik";
 import {useCookies} from "react-cookie";
+import {auth} from "../redux/app-reducer";
 
 const Auth = () => {
-    const [cookies, setCookie, removeCookie] = useCookies(null)
-   const [isLogInForm, setIsLoginForm] = useState(true)
 
+    const [cookies, setCookie, removeCookie] = useCookies(null)
+    const [isLogInForm, setIsLoginForm] = useState(true)
+    const [formError, setFormError] = useState(null)
     const viewLogin = (val) =>{
        setIsLoginForm(val)
     }
     const onClickSubmit = async (values, endpoint) => {
-        const response = await fetch(`${process.env.REACT_APP_SERVERURL}/${endpoint}`,{
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(  {user_email: values.email, password: values.password})
-        })
-        const data = await response.json();
-        console.log(data)
+        const data = await auth(values, endpoint)
         if(data.detail){
-            //setError
+            setFormError(data.detail)
         }else{
             setCookie('Email', data.user_email)
             setCookie('AuthToken', data.token)
+            window.location.reload()
         }
-        window.location.reload()
+
     }
 
 
@@ -34,20 +31,16 @@ const Auth = () => {
                   initialValues={{email: '', password:'', confirmPassword:''}}
                   validate={values => {
                       const errors = {};
-
-                      if (!values.aboutMe) {
-                           errors.email = 'Required';
-                      } else if (!values.password) {
-                           errors.aboutMe = 'Required';
-                      }else if (!values.confirmPassword) {
-                          errors.lookingForAJobDescription = 'Required';
+                      if (!isLogInForm && values.password != values.confirmPassword) {
+                            errors.password = 'Passwords should be identical';
+                      }else if(!isLogInForm && values.password === values.confirmPassword){
+                          delete errors.password
                       }
-
                       return errors;
 
                   }}
                   onSubmit={(values, { setSubmitting, setStatus }) => {
-                      onClickSubmit(values, isLogInForm? 'login': 'signup');
+                      onClickSubmit(values, isLogInForm ? 'login' : 'signup');
                       setSubmitting(false);
                   }}
               >
@@ -73,6 +66,7 @@ const Auth = () => {
                               value={values.title}
                               onChange={handleChange}
                           />
+                          {formError && <div className='error'>{formError}</div>}
                           <input
                               required
                               type="password"
@@ -91,6 +85,7 @@ const Auth = () => {
                               value={values.title}
                               onChange={handleChange}
                           />}
+                          <div className='error'>{errors.password && touched.confirmPassword && errors.password}</div>
                           <input type="submit" className="create" disabled={isSubmitting}/>
                       </form>
                   )}
