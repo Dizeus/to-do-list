@@ -7,6 +7,9 @@ const pool = require('./db')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const path = require('path')
+const root = path.join(__dirname, '../client', 'build')
+app.use(express.static(root));
+
 const {sign} = require("jsonwebtoken");
 app.use(cors())
 app.use(express.json())
@@ -91,7 +94,7 @@ app.post('/login', async (req, res)=>{
     }
 })
 
-app.get('*', (req,res)=>{
-    res.sendFile(path.join(__dirname, '../client/build/index.html'))
+app.get("*", (req, res) => {
+    res.sendFile('index.html', { root });
 })
 app.listen(PORT, ()=>console.log(`Server Running on PORT ${PORT}`))
