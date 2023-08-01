@@ -10,6 +10,7 @@ const App = () => {
 
     const authToken = cookies.AuthToken
     const user_email = cookies.Email
+
   return (
     <div className="app">
         {authToken?<Content removeCookies={removeCookies} userEmail={user_email}/>:<Auth/>}

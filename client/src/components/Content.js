@@ -7,7 +7,14 @@ import {createTask, deleteTask, getData, updateTask} from "../redux/app-reducer"
 
 const Content = ({deleteTask, updateTask, tasks, getData, createTask, userEmail, removeCookies}) => {
 
-    useEffect(()=> () =>getData(userEmail),[])
+    const askData = ()=>{
+        console.log('askdata')
+        getData(userEmail)
+    }
+    useEffect(()=>{
+        askData()
+        console.log('useEffect')
+    },[])
     console.log(userEmail)
     console.log(tasks, 'tasks in Content')
     return (
