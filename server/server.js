@@ -6,16 +6,16 @@ const app = express()
 const pool = require('./db')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const path = require('path')
 const {sign} = require("jsonwebtoken");
 app.use(cors())
 app.use(express.json())
 
 
-app.get('/', (req,res)=>{
-    res.send('hello something')
-})
-
-
+app.use(express.static(path.join(__dirname, 'client/build')))
+if(process.env.NODE_ENV == "production"){
+    app.use(express.static(path.join(__dirname, 'client/build')))
+}
 //get all todos
 app.get('/todos/:userEmail', async (req, res)=>{
     try{
@@ -90,5 +90,9 @@ app.post('/login', async (req, res)=>{
     }catch (error){
         console.error(error)
     }
+})
+
+app.get('*', (req,res)=>{
+    res.sendFile(path.join(__dirname, '../client/build/index.html'))
 })
 app.listen(PORT, ()=>console.log(`Server Running on PORT ${PORT}`))

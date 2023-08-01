@@ -2,12 +2,17 @@
   "name": "todolist",
   "version": "1.0.0",
   "description": "",
+  "engines": {
+    "node": "18.16.1",
+    "npm": "9.5.1"
+  },
   "scripts": {
     "build": "if-env TYPE=server && (cd server && npm install) || (cd client && npm install)",
     "server": "node ./server/server.js",
     "start": "cd server && node server.js",
+    "heroku-postbuild": "cd client && npm install && npm run build",
     "client": "cd client && npm start",
-    "all": "cd client && npm start && cd ../ && cd server && npm run start"
+    "all": "cd client && npm start && cd ../server && npm run start"
   },
   "author": "",
   "license": "ISC",

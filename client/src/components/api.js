@@ -4,7 +4,7 @@ export const api = {
 
     async getTasks(userEmail){
         try{
-            const response = await fetch(`http://localhost:8000/todos/${userEmail}`)
+            const response = await fetch(`${process.env.REACT_APP_SERVERURL}todos/${userEmail}`)
             const todos = await response.json();
             return todos;
         }catch (err){
@@ -13,7 +13,7 @@ export const api = {
     },
     async createTask(data){
         try{
-            const response = await fetch(`http://localhost:8000/todos`, {
+            const response = await fetch(`${process.env.REACT_APP_SERVERURL}todos/`, {
                 method: "POST",
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
@@ -26,7 +26,7 @@ export const api = {
 
     async updateTask(data, id){
         try{
-            const response = await fetch(`http://localhost:8000/todos/${id}`, {
+            const response = await fetch(`${process.env.REACT_APP_SERVERURL}todos/${id}`, {
                 method: "PUT",
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
@@ -38,7 +38,7 @@ export const api = {
     },
     async deleteTask(id){
         try{
-            const response = await fetch(`http://localhost:8000/todos/${id}`, {
+            const response = await fetch(`${process.env.REACT_APP_SERVERURL}todos/${id}`, {
                 method: "DELETE"
             })
             return response.status;
@@ -48,7 +48,7 @@ export const api = {
     },
     async auth(values, endpoint){
         try {
-            const response = await fetch(`${process.env.REACT_APP_SERVERURL}/${endpoint}`,{
+            const response = await fetch(`${process.env.REACT_APP_SERVERURL}${endpoint}`,{
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(  {user_email: values.email, password: values.password})
