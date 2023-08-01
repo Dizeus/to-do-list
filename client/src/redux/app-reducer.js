@@ -30,6 +30,7 @@ export const editTasks = (newTasks) => ({ type: SET_TASKS, payload:newTasks});
 export const getData = (userEmail) => async (dispatch)=> {
     try {
         const todos = await api.getTasks(userEmail)
+        console.log("app-reducer", todos)
         dispatch(setTasks(todos))
     }catch (err){
         console.error(err)

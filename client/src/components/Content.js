@@ -8,7 +8,8 @@ import {createTask, deleteTask, getData, updateTask} from "../redux/app-reducer"
 const Content = ({deleteTask, updateTask, tasks, getData, createTask, userEmail, removeCookies}) => {
 
     useEffect(()=> () =>getData(userEmail),[])
-
+    console.log(userEmail)
+    console.log(tasks, 'tasks in Content')
     return (
             <>
                 <ListHeader updateTask={updateTask} getData={getData} removeCookies={removeCookies} createTask={createTask} listName={'Holiday tick list'}/>

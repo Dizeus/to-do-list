@@ -5,8 +5,8 @@ export const api = {
     async getTasks(userEmail){
         try{
             const response = await fetch(`/todos/${userEmail}`)
-            console.log()
             const todos = await response.json();
+            console.log(todos, "api todos")
             return todos;
         }catch (err){
             console.error(err)
@@ -58,7 +58,7 @@ export const api = {
             console.log("after fetch")
             return await response.json();
         }catch (err){
-            //console.error(err)
+            console.error(err)
         }
     },
 
