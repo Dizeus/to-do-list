@@ -13,6 +13,7 @@ const Auth = () => {
     }
     const onClickSubmit = async (values, endpoint) => {
         const data = await auth(values, endpoint)
+        console.log(data, "auth response")
         if(data.detail){
             setFormError(data.detail)
         }else{
