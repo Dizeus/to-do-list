@@ -78,10 +78,7 @@ app.post('/signup', async (req, res)=>{
 app.post('/login', async (req, res)=>{
     const {user_email, password} = req.body
     try{
-        console.log('login before')
         const users = await pool.query(`SELECT * FROM users WHERE email=$1`, [user_email]);
-        console.log(users)
-        console.log('login after')
         if (!users.rows.length) return res.json({ detail: 'User does not exist!' })
         let success = await bcrypt.compare(password, users.rows[0].hashed_password);
         if (success) {

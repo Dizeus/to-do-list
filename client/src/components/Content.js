@@ -8,18 +8,15 @@ import {createTask, deleteTask, getData, updateTask} from "../redux/app-reducer"
 const Content = ({deleteTask, updateTask, tasks, getData, createTask, userEmail, removeCookies}) => {
 
     const askData = ()=>{
-        console.log('askdata')
         getData(userEmail)
     }
     useEffect(()=>{
         askData()
-        console.log('useEffect')
     },[])
-    console.log(userEmail)
-    console.log(tasks, 'tasks in Content')
+
     return (
             <>
-                <ListHeader updateTask={updateTask} getData={getData} removeCookies={removeCookies} createTask={createTask} listName={'Holiday tick list'}/>
+                <ListHeader updateTask={updateTask} getData={getData} removeCookies={removeCookies} createTask={createTask} listName={'To do today'}/>
                 {tasks?.map((task)=><ListItem deleteTask={deleteTask} updateTask={updateTask} getData={getData} createTask={createTask} task={task} key={task.id}/>)}
             </>
     );

@@ -6,7 +6,6 @@ export const api = {
         try{
             const response = await fetch(`/todos/${userEmail}`)
             const todos = await response.json();
-            console.log(todos, "api todos")
             return todos;
         }catch (err){
             console.error(err)
@@ -49,13 +48,11 @@ export const api = {
     },
     async auth(values, endpoint){
         try {
-            console.log("in Api")
             const response = await fetch(`/${endpoint}`,{
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(  {user_email: values.email, password: values.password})
             })
-            console.log("after fetch")
             return await response.json();
         }catch (err){
             console.error(err)

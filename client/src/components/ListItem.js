@@ -14,10 +14,12 @@ const ListItem = ({deleteTask, updateTask, getData, createTask,task}) => {
 
     <li className='list-item'>
         <div className='info-container'>
-            <TickIcon/>
-            <p className='task-title'>{task.title}</p>
+            <div className='tick-title-container'>
+                <TickIcon/>
+                <p className='task-title'>{task.title}</p>
+            </div>
             <ProgressBar progress={task.progress}/>
-            <div className="button-container">
+            <div className="button-container button-container-item">
                 <button className='edit' onClick={()=>setShowModal(true)}>Edit</button>
                 <button className='delete' onClick={onClickDelete}>Delete</button>
 

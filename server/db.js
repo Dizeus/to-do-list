@@ -14,9 +14,9 @@ const proConfig = {
     connectionString: process.env.DATABASE_URL,
     ssl: {    /* <----- Add SSL option */
         rejectUnauthorized: false,
-    },//heroku addons
+    },
 }
-console.log(process.env.DATABASE_URL, process.env.NODE_ENV === "production")
+
 const pool = new Pool(process.env.NODE_ENV === "production"? proConfig: devConfig)
 
 module.exports = pool

@@ -30,7 +30,6 @@ export const editTasks = (newTasks) => ({ type: SET_TASKS, payload:newTasks});
 export const getData = (userEmail) => async (dispatch)=> {
     try {
         const todos = await api.getTasks(userEmail)
-        console.log("app-reducer", todos)
         dispatch(setTasks(todos))
     }catch (err){
         console.error(err)
@@ -46,7 +45,7 @@ export const createTask = (data) => async (dispatch) => {
             throw("An error occurred")
         }
     }catch (error){
-        console.log(error)
+        console.error(error)
     }
 }
 
@@ -59,7 +58,7 @@ export const updateTask = (data, id) => async (dispatch) => {
             throw("An error occurred")
         }
     }catch (error){
-        console.log(error)
+        console.error(error)
     }
 }
 export const deleteTask = (id, userEmail) => async (dispatch) => {
@@ -71,7 +70,7 @@ export const deleteTask = (id, userEmail) => async (dispatch) => {
             throw("An error occurred")
         }
     }catch (error){
-        console.log(error)
+        console.error(error)
     }
 }
 
