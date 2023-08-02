@@ -66,7 +66,6 @@ const Auth = () => {
                               value={values.title}
                               onChange={handleChange}
                           />
-                          {formError && <div className='error'>{formError}</div>}
                           <input
                               required
                               type="password"
@@ -85,11 +84,14 @@ const Auth = () => {
                               value={values.title}
                               onChange={handleChange}
                           />}
+                          {formError && <div className='error'>{formError}</div>}
                           <div className='error'>{errors.password && touched.confirmPassword && errors.password}</div>
-                          <input type="submit" className="create" disabled={isSubmitting}/>
+                          <input type="submit" className="auth-submit" disabled={isSubmitting}/>
+                          <div style={{textAlign: "left", color:'rgb(188, 188, 188)'}}>For test you can use: <br/>Email: test@com <br/> Password: 111</div>
                       </form>
                   )}
               </Formik>
+
               <div className="auth-options">
                   <button
                       onClick={() => viewLogin(false)}
@@ -100,7 +102,6 @@ const Auth = () => {
                       style={{backgroundColor : isLogInForm ? 'rgb(255, 255, 255)' : 'rgb(188, 188, 188)'}}
                   >Login</button>
               </div>
-
           </div>
       </div>
   )
